@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
 });
 
 // Environment variable setup for PORT
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 // Start server with PORT || 3000
 app.listen(PORT, () => {

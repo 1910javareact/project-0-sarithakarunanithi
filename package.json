@@ -19,6 +19,7 @@
   "homepage": "https://github.com/1910javareact/project-0-sarithakarunanithi#readme",
   "devDependencies": {
     "@types/express-session": "^1.15.16",
+    "@types/pg": "^7.11.2",
     "nodemon": "^1.19.4",
     "ts-node": "^8.5.2",
     "tslint": "^5.20.1",
@@ -28,6 +29,7 @@
     "@types/node": "^12.12.11",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
-    "express-session": "^1.17.0"
+    "express-session": "^1.17.0",
+    "pg": "^7.14.0"
   }
 }

@@ -1,44 +1,71 @@
-import { User } from "../models/user";
-import { users } from "../database";
-// import { getUserById } from "../service/user-service";
+import { User } from '../models/user';
+import { users } from '../database';
+import { PoolClient } from 'pg';
+import { getUserById } from '../service/user-service';
+import { connectionPool } from '.';
+import { userDTOtoUser, multiUserDTOConverter } from '../util/Userdto-to-user';
 
 // make a function to call all user
-export function daoGetAllUsers(): User[] {
-    return users
+export async function daoGetAllUsers(): Promise<User[]> {
+    let client: PoolClient;
+    try {
+        client = await connectionPool.connect();
+        const result = await client.query('');  //have to write q
+        return multiUserDTOConverter(result.rows);
+    } catch (e) {
+        console.log(e);
+        throw {
+            status: 500,
+            message: 'Internal server Error'
+        };
+    } finally {
+        client && client.release();
+    }
 }
 
 // save 1 user
-// export function daoSaveOneUser(u:User){
-//     u.userId = userId
-//     id++
-//     users.push(u)
-//     return true   
-// }
-
-
 
 // get user id
-export function daoGetUserById(id: number) {
-    for (let u of users) {
-        if (u.userId === id) {
-            return u
+export async function daoGetUserById(id: number): Promise<User> {
+    let client: PoolClient;
+    try {
+        client = await connectionPool.connect();
+        const result = await client.query(''); // write q
+        if (result.rowCount > 0) {
+            return userDTOtoUser(result.rows);
+        } else {
+            throw 'No such User';
         }
-    }
-    throw {
-        status: 404,
-        message: 'This user does not exist'
+    } catch (e) {
+        if ( e === 'No such User') {
+            throw{
+                status: 500,
+                message: 'Internal Server Error'
+            };
+        }
     }
 }
 
 // Get username & password
-export function daoGetUsernameAndPassword(username: string, password: string) {
-    for (let u of users) {
-        if (username === u.username && password === u.password) {
-            return u;
+export async function daoGetUsernameAndPassword(username: string, password: string): Promise<User> {
+    let client: PoolClient;
+    try {
+        client = await connectionPool.connect();
+        const result = await client.query(''); // write q
+        if (result.rowCount === 0) {
+            throw 'bad credentials';
+        } else {
+            return userDTOtoUser(result.rows);
         }
-    }
-    throw {
-        status: 401,
-        message: 'Bad Credentials'
+    } catch (e) {
+        console.log(e);
+        if (e === 'bad credentials') {
+            throw {
+                status: 401,
+                message: 'Internal Server Error'
+            };
+        }
+    } finally {
+        client && client.release();
     }
 }
