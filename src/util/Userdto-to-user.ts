@@ -4,7 +4,7 @@ import { UserDTO } from '../dtos/user-dto';
 export function userDTOtoUser(uD: UserDTO[]): User {
     const roles = [];
     for (const u of uD) {
-        roles.push(u.role_name);
+        roles.push(u.role_name); // add in the top
     }
     return new User(
         uD[0].userId,
@@ -17,8 +17,8 @@ export function userDTOtoUser(uD: UserDTO[]): User {
 }
 
 // multi user
-export function multiUserDTOConverter(uD: UserDTO[]): User[]{
-    let currentUser: UserDTO[] = [];
+export function multiUserDTOConverter(uD: UserDTO[]): User[] {
+    let currentUser: UserDTO[] = []; // user-dto.ts
     const result: User[] = [];
     for (const u of uD) {
         if (currentUser.length === 0) {

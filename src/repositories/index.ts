@@ -1,21 +1,11 @@
 import { Pool } from 'pg' ;
 
-//import { Pool } from 'pg';
-
-console.log({
-    user: process.env[''],
-    host: process.env[''],
-    database: process.env[''],
-    password: process.env[''],
-    port: 5432,
-    max: 5,
-});
-
+// our secret data should be hide , so we can assign in env. var
 export const connectionPool: Pool = new Pool({
-    user: process.env[''],
-    host: process.env[''],
-    database: process.env[''],
-    password: process.env[''],
+    user: process.env['PROJECT0_USERNAME'],
+    host: process.env['PROJECT0_HOST'],
+    database: process.env['PROJECT0_DATABASE'],
+    password: process.env['PROJECT0_PASSWORD'],
     port: 5432,
     max: 5,
 });

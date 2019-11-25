@@ -1,3 +1,5 @@
+//DB version
+
 export class UserDTO {
     userId: number;
     username: string;

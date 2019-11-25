@@ -1,19 +1,29 @@
-export function authorization(authRoles:string[]){
-    return(req, res, next) => {
-        let isAuth = false;
+// authorization
+export function authorization(roleIds: number[], userId?: boolean){
+    return (req, res, next)=>{        
+        let isAuth = false
+        
         if(!req.session.user){
-            res.status(401).send('Please Login')
+            res.status(400).send('Please log in')
             return
         }
-        for(let userRole of req.session.user.roles){
-            if(authRoles.includes(userRole)){
-                isAuth = true
+//To check the role is authorized
+        if(roleIds.includes(req.session.user.role.roleId)){
+            isAuth = true
+        }
+//To check if the userId is same as what they are trying to access
+        if(userId){
+            let id = +req.params.id
+            if(!isNaN(id)){
+                if(req.session.user.userId === id){
+                    isAuth = true
+                }
             }
         }
-        if(isAuth){
-            next()
-        }else{
-            res.status(403).send('You are authorized for this endpoint')
+        if (isAuth) {
+            next();
+        } else{
+            res.status(401).send("The incoming token has expired")
         }
     }
 }
