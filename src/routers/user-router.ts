@@ -1,7 +1,8 @@
 import express from 'express';
 //import { User } from "../models/user";
-import { getAllUsers, getUserById, getUpdateUser } from '../service/user-service';
+import { getAllUsers, getUpdateUser } from '../service/user-service';
 import { authorization } from '../middleware/auth-middleware';
+import { daoGetUserById } from '../repositories/user-dao';
 
 //router base path
 export const userRouter = express.Router();
@@ -15,17 +16,17 @@ async function controllerGetUsers(req, res) {
         res.status(e.status).send(e.message);
     }
 }
-//
+
 userRouter.get('', [authorization([1]), controllerGetUsers ]);
-//
+// by id
 userRouter.get('/:id', async(req, res) => {
     const id = +req.params.id;
     if (isNaN(id)) {
         res.sendStatus(400);
     } else {
         try {
-            const user = await getUserById(id);
-            res.json(user);
+            const users = await daoGetUserById(id);
+            res.json(users);
         } catch (e) {
             res.status(e.status).send(e.message);
         }

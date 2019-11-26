@@ -10,14 +10,21 @@ export async function getAllUsers(): Promise<User[]> {
      }
 }
 
-export function getUserById(id: number): Promise<User> {
-    console.log('Service: You are searching for ' + id);
-    return daoGetUserById(id);
+export async function getUserById(id: number): Promise<User> {
+    //console.log('Service: You are searching for ' + id);
+   try{
+      return await daoGetUserById(id);
+   }catch (e){
+       throw e
+   }
 }
 
-export function getUserByUsernameAndPassword(username: string, password: string) {
-     // have to finish the functionality
-    return daoGetUsernameAndPassword(username, password);
+export async function getUserByUsernameAndPassword(username: string, password: string): Promise<User> {
+   try{
+      return await daoGetUsernameAndPassword(username, password);
+   }catch(e){
+       throw e
+   }
 }
 
 export async function getUpdateUser(req:User){

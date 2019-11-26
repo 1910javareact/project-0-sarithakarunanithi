@@ -36,8 +36,6 @@ export async function daoGetAllUsers(): Promise<User[]> {
     }
 }
 
-// save 1 user
-
 // get user id
 export async function daoGetUserById(userId: number): Promise<User> {
     let client: PoolClient;
