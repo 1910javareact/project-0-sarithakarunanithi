@@ -1,7 +1,7 @@
 import { User } from '../models/user';
-import { daoGetAllUsers, daoGetUserById, daoGetUsernameAndPassword, daoUpdateUser } from '../repositories/user-dao';
+import { daoGetAllUsers, daoGetUserById, daoGetUsernameAndPassword } from '../repositories/user-dao';
 
-
+// return all user
 export async function getAllUsers(): Promise<User[]> {
     try {
          return await daoGetAllUsers();
@@ -9,7 +9,7 @@ export async function getAllUsers(): Promise<User[]> {
          throw e;
      }
 }
-
+//return user by id
 export async function getUserById(id: number): Promise<User> {
     //console.log('Service: You are searching for ' + id);
    try{
@@ -18,7 +18,7 @@ export async function getUserById(id: number): Promise<User> {
        throw e
    }
 }
-
+// return user by username & password
 export async function getUserByUsernameAndPassword(username: string, password: string): Promise<User> {
    try{
       return await daoGetUsernameAndPassword(username, password);
@@ -26,13 +26,13 @@ export async function getUserByUsernameAndPassword(username: string, password: s
        throw e
    }
 }
+// //return updated user
+// export async function getUpdateUser(req:User){
+//     let user = await daoGetUserById(req.userId)
+//     for(let key in req){
+//         if(req[key] !== undefined && user.hasOwnProperty(key)){
 
-export async function getUpdateUser(req:User){
-    let user = await daoGetUserById(req.userId)
-    for(let key in req){
-        if(req[key] !== undefined && user.hasOwnProperty(key)){
-
-        }
-    }
-    return await daoUpdateUser(user);
-}
+//         }
+//     }
+//     return await daoUpdateUser(user);
+// }

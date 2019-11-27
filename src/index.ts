@@ -18,16 +18,17 @@ app.use('/users', userRouter);
 
 // Creating routes by calling single call back function & using arrow function
 app.get('/', (req, res) => {
-    res.send('<h1>Welcome to the Reimbursment app!!</h1>');
+    res.send('<h1>Welcome to the Reimbursment API!!</h1>');
 });
 
 // login
 app.post('/login', async(req, res) => {
     const {username, password} = req.body;
+
     if (!username || !password) {
         res.status(400).send('Please have a username and password field');
-
-    }try {
+    }
+    try {
         const user = await getUserByUsernameAndPassword(username, password);
         req.session.user = user;
         res.json(user);

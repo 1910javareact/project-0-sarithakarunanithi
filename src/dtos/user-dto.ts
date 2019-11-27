@@ -1,4 +1,4 @@
-//Data Transfer Object - DB version
+//Data Transfer Object - DB version of 1 of our model
 
 export class UserDTO {
     user_Id: number;

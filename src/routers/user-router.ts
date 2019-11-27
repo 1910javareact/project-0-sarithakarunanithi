@@ -1,7 +1,6 @@
 import express from 'express';
-//import { User } from "../models/user";
-import { getAllUsers, getUpdateUser } from '../service/user-service';
-import { authorization } from '../middleware/auth-middleware';
+import { getAllUsers } from '../service/user-service';
+//import { authorization } from '../middleware/auth-middleware';
 import { daoGetUserById } from '../repositories/user-dao';
 
 //router base path
@@ -17,8 +16,10 @@ async function controllerGetUsers(req, res) {
     }
 }
 
-userRouter.get('', [authorization([1]), controllerGetUsers ]);
-// by id
+//HTTP GET request method retrieves information from the server
+//userRouter.get('', [authorization([1]), controllerGetUsers ]);
+userRouter.get('', controllerGetUsers);
+
 userRouter.get('/:id', async(req, res) => {
     const id = +req.params.id;
     if (isNaN(id)) {
@@ -33,15 +34,15 @@ userRouter.get('/:id', async(req, res) => {
     }
 });
 
-//patch user
-userRouter.patch('', authorization([2]), async(req, res) => {
-    try{
-        let {body} = req
-        let user = await getUpdateUser(body)
-        res.status(200).json(user)
-    }catch(e){
-        res.status(e.status).send(e.message)
-    }
-})
+// //patch method is used to update 
+// userRouter.patch('', authorization([2]), async(req, res) => {
+//     try{
+//         let {body} = req
+//         let user = await getUpdateUser(body)
+//         res.status(200).json(user)
+//     }catch(e){
+//         res.status(e.status).send(e.message)
+//     }
+// })
 
 
