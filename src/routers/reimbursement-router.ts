@@ -61,13 +61,16 @@ reimbursementRouter.get('/status/:statusId', async (req, res) => {
         }
     });
 
-
+// post reimbursement
 reimbursementRouter.post('',  async (req, res) => {
         const { body } = req;
         const newR = new Reimbursement(0, 0, 0, 0, 0, ``, 0, 0, 0);
+    // console.log(req.body.description);
+    // console.log(req.body.author);
+          
         for (const key in newR) {
-            if (body[key] === undefined) {
-                res.status(400).send(`Please include all required fields`);
+            if (!req.body[key]) {
+                res.status(400).send(`Please include all fields`);
                 break;
             } else {
                 newR[key] = body[key];
@@ -95,7 +98,7 @@ reimbursementRouter.post('',  async (req, res) => {
 //     res.status(400).send(`Please enter a valid reimbursement id`);
 // }
 // try {
-//     const result = await patchReimbersement(reimburse);
+//     const result = await patchReimbursement(reimburse);
 //     res.status(201).json(result);
 // } catch (e) {
 //     res.status(e.status).send(e.message);

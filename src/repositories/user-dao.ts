@@ -104,10 +104,17 @@ export async function daoUpdateUser(newUser: User) {
     try {
         client = await connectionPool.connect();
         client.query('BEGIN');
-        await client.query('UPDATE project0_reimbursement.users SET username = $2, "password" = $3, first_name = $4, last_name = $5, email = $6  WHERE user_id = $1',
-                        [ newUser.userId, newUser.username, newUser.password, newUser.firstName, newUser.lastName, newUser.email]);
+        await client.query('update project0_reimbursement.users set username = $1, password = $2, first_name = $3, last_name = $4, email = $5 where user_id = $6',
+            [newUser.username, newUser.password, newUser.firstName, newUser.lastName, newUser.email, newUser.userId]);
+        await client.query('delete from project0_reimbursement.users_roles where user_id = $1',
+            [newUser.userId]);
+        // for ( const role of newUser.roles) {
+        //     await client.query('insert into project0_reimbursement.users_roles values ($1,$2)',
+        //     [newUser.userId, role.roleId]);
+        // }
         client.query('COMMIT');
-    } catch (e) {
+    } catch (e) {console.log(e);
+    
         client.query('ROLLBACK');
         throw {
             status: 500,
@@ -117,6 +124,3 @@ export async function daoUpdateUser(newUser: User) {
         client.release();
     }
 }
-
-
-

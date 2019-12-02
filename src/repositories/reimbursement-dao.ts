@@ -22,6 +22,7 @@ export async function daoGetAllReimbursement(): Promise<Reimbursement[]> {
     }
 }
 
+// By status id
 export async function daoGetReimbursementsByStatusId(statusId: number) {
     let client: PoolClient;
     try {
@@ -53,6 +54,7 @@ export async function daoGetReimbursementsByStatusId(statusId: number) {
     }
 }
 
+// By user id
 export async function daoGetReimbursementsByUserId(userId: number) {
     let client: PoolClient;
     try {
@@ -85,18 +87,23 @@ export async function daoGetReimbursementsByUserId(userId: number) {
     }
 }
 
-export async function daoPostReimbersement(Reim) {
+// post reimbursement
+export async function daoPostReimbursement(post) {
     let client: PoolClient;
     try {
         client = await connectionPool.connect();
         client.query('BEGIN');
-        await client.query('INSERT INTO project0.reimbursement (author, amount, datesubmitted, description, status, type) values ($1,$2,$3,$4,1,$5)',
-            [Reim.author, Reim.amount, Reim.dateSubmitted, Reim.description, Reim.type]);
-        const result = await client.query('SELECT * FROM project0.reimbursement WHERE author = $1 ORDER BY reimbursementid DESC LIMIT 1 OFFSET 0',
-            [Reim.author]);
+       // console.log(post.author);
+        
+        await client.query('INSERT INTO project0_reimbursement.reimbursement (author, amount, date_submitted, date_resolved, description, resolver, status_id, type_id) values ($1,$2,$3,$4,$5,1,$6,$7)',
+                           [post.author, post.amount, post.date_submitted, post.date_resolved, post.description, post.type]);
+        const result = await client.query('SELECT * FROM project0_reimbursement.reimbursement WHERE author = $1 ORDER BY reimbursement_id DESC LIMIT 1 OFFSET 0',
+                          [post.author]);
         client.query('COMMIT');
         return multiReimbursementDTOConvertor(result.rows);
     } catch (e) {
+        console.log(e);
+        
         client.query('ROLLBACK');
         throw {
             status: 500,

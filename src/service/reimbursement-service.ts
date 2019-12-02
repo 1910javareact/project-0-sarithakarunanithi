@@ -1,5 +1,5 @@
 import { Reimbursement } from "../models/reimbursement ";
-import { daoGetAllReimbursement, daoGetReimbursementsByReimbursementId, daoGetReimbursementsByStatusId, daoGetReimbursementsByUserId, daoPostReimbersement } from "../repositories/reimbursement-dao";
+import { daoGetAllReimbursement, daoGetReimbursementsByReimbursementId, daoGetReimbursementsByStatusId, daoGetReimbursementsByUserId, daoPostReimbursement } from "../repositories/reimbursement-dao";
 
 //get all reimbursement
 export function getAllReims(): Promise<Reimbursement[]> {
@@ -33,16 +33,17 @@ export function getReimbursementsByUserId(userId: number) {
     }
 }
 
+// post reimbursement
 export function postReimbursement(post) {
     try {
-        return daoPostReimbersement(post);
+        return daoPostReimbursement(post);
     } catch (e) {
         throw e;
     }
 }
 
 // //patch
-// export async function patchReimbersement(patch) {
+// export async function patchReimbursement(patch) {
 //     try {
 //         const post = await daoGetReimbursementsByReimbursementId(patch.reimbursementId);
 //         for (const key in post) {
