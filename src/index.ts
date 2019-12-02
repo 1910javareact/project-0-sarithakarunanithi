@@ -3,6 +3,7 @@ import bodyparser from 'body-parser';
 import { userRouter } from './routers/user-router';
 import { sessionMiddleware } from './middleware/session-middleware';
 import { getUserByUsernameAndPassword } from './service/user-service';
+import { reimbursementRouter } from './routers/reimbursement-router';
 
 // Initializing an app from express
 const app = express();
@@ -12,9 +13,6 @@ app.use(bodyparser.json());
 
 // session middleware
  app.use(sessionMiddleware);
-
-// registering the router with base path
-app.use('/users', userRouter);
 
 // Creating routes by calling single call back function & using arrow function
 app.get('/', (req, res) => {
@@ -36,6 +34,12 @@ app.post('/login', async(req, res) => {
         res.status(e.status).send(e.message);
     }
 });
+
+// registering the router with base path
+app.use('/users', userRouter);
+
+// reimbursement
+app.use('/reimbursements', reimbursementRouter)
 
 // Environment variable setup for PORT
 const PORT = process.env.PORT || 3001;

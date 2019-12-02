@@ -1,6 +1,7 @@
 import { User } from '../models/user';
 import { UserDTO } from '../dtos/user-dto';
 
+
 export function userDTOtoUser(uD: UserDTO[]): User {
     const roles = [];
     for (const u of uD) {
@@ -10,7 +11,7 @@ export function userDTOtoUser(uD: UserDTO[]): User {
         }); 
     }
     return new User(
-        uD[0].user_Id,
+        uD[0].user_id,
         uD[0].user_name,
         uD[0].password,
         uD[0].first_name,
@@ -20,13 +21,13 @@ export function userDTOtoUser(uD: UserDTO[]): User {
 }
 
 // multi user
-export function multiUserDTOConverter(uD: UserDTO[]): User[] {
+export function multiUserDTOUser(uD: UserDTO[]): User[] {
     let currentUser: UserDTO[] = []; // user-dto.ts
     const result: User[] = [];
     for (const u of uD) {
         if (currentUser.length === 0) {
             currentUser.push(u);
-        } else if (currentUser[0].user_Id === u.user_Id) {
+        } else if (currentUser[0].user_id === u.user_id) {
             currentUser.push(u);
         } else {
             result.push(userDTOtoUser(currentUser));
@@ -37,4 +38,12 @@ export function multiUserDTOConverter(uD: UserDTO[]): User[] {
     result.push(userDTOtoUser(currentUser));
     return result;
 }
+
+
+
+
+
+
+
+
 

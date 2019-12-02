@@ -12,7 +12,7 @@ export class User {
           role: Role[];     // not null
 
           constructor(userId: number, username: string, password: string, firstname: string,
-                      lastname: string, email: string, role: Role []) {
+                      lastname: string, email: string, role: Role[] ) {
                           this.userId = userId;
                           this.username = username;
                           this.password = password;

@@ -1,7 +1,7 @@
 //Data Transfer Object - DB version of 1 of our model
 
 export class UserDTO {
-    user_Id: number;
+    user_id: number;
     user_name: string;
     password: string;
     first_name: string;
