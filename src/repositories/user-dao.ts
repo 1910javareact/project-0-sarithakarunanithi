@@ -2,6 +2,7 @@ import { User } from '../models/user';
 import { PoolClient } from 'pg';
 import { connectionPool } from '.';
 import { userDTOtoUser, multiUserDTOUser } from '../util/Userdto-to-user';
+//import { users } from '../database';
 
 
 // make a async function to call all users
@@ -10,8 +11,6 @@ export async function daoGetAllUser(): Promise<User[]> {   // Promise is an obj
     try {
         client = await connectionPool.connect();
         const result = await client.query('SELECT * FROM project0_reimbursement.users NATURAL JOIN project0_reimbursement.users_roles NATURAL JOIN project0_reimbursement.roles ORDER BY user_id');   //have to write q                                      
-     
-       // delete multiUser converter and work on it & send pass on it
         console.log(result.rows);
        
         if (result.rowCount === 0) {
@@ -104,17 +103,25 @@ export async function daoUpdateUser(newUser: User) {
     try {
         client = await connectionPool.connect();
         client.query('BEGIN');
-        await client.query('update project0_reimbursement.users set username = $1, password = $2, first_name = $3, last_name = $4, email = $5 where user_id = $6',
+        const result = await client.query('update project0_reimbursement.users set username = $1, password = $2, first_name = $3, last_name = $4, email = $5 where user_id = $6',
             [newUser.username, newUser.password, newUser.firstName, newUser.lastName, newUser.email, newUser.userId]);
-        await client.query('delete from project0_reimbursement.users_roles where user_id = $1',
-            [newUser.userId]);
+      console.log(result.rows);
+      
+            // await client.query('delete from project0_reimbursement.users_roles where user_id = $1',
+        //     [newUser.userId]);
         // for ( const role of newUser.roles) {
         //     await client.query('insert into project0_reimbursement.users_roles values ($1,$2)',
         //     [newUser.userId, role.roleId]);
         // }
+
+        
         client.query('COMMIT');
-    } catch (e) {console.log(e);
-    
+       // return userDTOtoUser(result.rows);
+      
+      
+        
+    } catch (e) {
+        console.log(e);
         client.query('ROLLBACK');
         throw {
             status: 500,

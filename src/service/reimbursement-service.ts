@@ -1,24 +1,17 @@
+
 import { Reimbursement } from "../models/reimbursement ";
-import { daoGetAllReimbursement, daoGetReimbursementsByReimbursementId, daoGetReimbursementsByStatusId, daoGetReimbursementsByUserId, daoPostReimbursement } from "../repositories/reimbursement-dao";
+import { daoGetAllReimbursement, daoGetReimbursementsByStatusId, daoGetReimbursementsByUserId, daoPostReimbursement, daoUpdateReimbursement, daoGetReimbursementsByReimbursementId } from "../repositories/reimbursement-dao";
+
 
 //get all reimbursement
 export function getAllReims(): Promise<Reimbursement[]> {
     return daoGetAllReimbursement();
 }
 
-// Reimbursement id
-export function getReimbursementsByReimbursementId(reimbursementid){
-    try {
-        return daoGetReimbursementsByReimbursementId(reimbursementid);
-    } catch(e) {
-        throw e;
-    }
-}
-
 // status id
-export function getReimbursementsByStatusId(status: number) {
+export function getReimbursementsByStatusId(statusId: number) {
     try {
-        return daoGetReimbursementsByStatusId(status);
+        return daoGetReimbursementsByStatusId(statusId);
     } catch (e) {
         throw e;
     }
@@ -42,17 +35,27 @@ export function postReimbursement(post) {
     }
 }
 
-// //patch
-// export async function patchReimbursement(patch) {
-//     try {
-//         const post = await daoGetReimbursementsByReimbursementId(patch.reimbursementId);
-//         for (const key in post) {
-//             if (patch.hasOwnProperty(key)) {
-//                 post[key] = patch[key];
-//             }
-//         }
-//         return await daoUpdateReimbursement(post);
-//     } catch (e) {
-//         throw e;
-//     }
-// }
+//patch
+export async function patchReimbursement(patch) {
+    try {
+        const post = await daoGetReimbursementsByReimbursementId(patch.reimbursementId);
+        for (const key in post) {
+            if (patch.hasOwnProperty(key)) {
+                post[key] = patch[key];
+            }
+        }
+        return await daoUpdateReimbursement(post);
+    } catch (e) {
+        throw e;
+    }
+}
+
+
+// Reimbursement id
+export function getReimbursementsByReimbursementId(reimbursementid){
+    try {
+        return daoGetReimbursementsByReimbursementId(reimbursementid);
+    } catch(e) {
+        throw e;
+    }
+}

@@ -28,11 +28,16 @@ export async function getUserByUsernameAndPassword(username: string, password: s
 }
 //return updated user
 export async function getUpdateUser(req:User){
+    try{
     let user = await daoGetUserById(req.userId)
     for(let key in req){
         if(req[key] !== undefined && user.hasOwnProperty(key)){
-
+            user[key] = req[key];
         }
     }
-    return await daoUpdateUser(user);
+    await daoUpdateUser(user);
+    return user;
+}catch(e){
+    throw e;
+  }
 }
