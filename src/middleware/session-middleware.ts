@@ -1,10 +1,12 @@
 import session from 'express-session';
 
+// initial config of session
 const sess = {
     secret: 'secret',
-    cookie: {secure: false},
+    cookie: { secure: false },
     resave: false,
     saveUninitialized: false
 };
 
-export const sessionMiddleware = session(sess);
+// use it in index.ts
+export const sessionMiddleware = session(sess); 

@@ -8,11 +8,12 @@ import { reimbursementRouter } from './routers/reimbursement-router';
 // Initializing an app from express
 const app = express();
 
-// Middleware - all req is go by this bodyparser & fall into next endpoint
+// Middleware - all req is go by this bodyparser 
+// req json string turn into json obj & fall into next endpoint
 app.use(bodyparser.json());
 
-// session middleware
- app.use(sessionMiddleware);
+// session middleware - handling the session
+app.use(sessionMiddleware);
 
 // Creating routes by calling single call back function & using arrow function
 app.get('/', (req, res) => {
@@ -20,31 +21,31 @@ app.get('/', (req, res) => {
 });
 
 // login
-app.post('/login', async(req, res) => {
-    const {username, password} = req.body;
+app.post('/login', async (req, res) => {
+    const { username, password } = req.body;
 
     if (!username || !password) {
-        res.status(400).send('Please have a username and password field');
+        res.status(400).send('Please have an username and password field');
     }
     try {
         const user = await getUserByUsernameAndPassword(username, password);
         req.session.user = user;
-        res.json(user);
+        res.json(user);   // it sends the logged user info after log in
     } catch (e) {
         res.status(e.status).send(e.message);
     }
 });
 
-// registering the router with base path
+// registering the router with base path - /users
 app.use('/users', userRouter);
 
-// reimbursement
+// - /reimbursements
 app.use('/reimbursements', reimbursementRouter)
 
 // Environment variable setup for PORT
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3002;
 
-// Start server with PORT || 3001
+// Start server with PORT || 3002
 app.listen(PORT, () => {
     console.log(`app started on port ${PORT}...`);
 });

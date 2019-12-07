@@ -1,16 +1,13 @@
-
 import express from 'express';
 import { Reimbursement } from '../models/reimbursement ';
-//import { daoGetAllReimbursement } from '../repositories/reimbursement-dao';
-import { getReimbursementsByUserId, getReimbursementsByStatusId, postReimbursement, patchReimbursement } from '../service/reimbursement-service';
-
+import { getReimbursementsByUserId, getReimbursementsByStatusId, patchReimbursement, postReimbursement} from '../service/reimbursement-service';
+//import * as reimbursementServices from '../service/reimbursement-service';
 
 export const reimbursementRouter = express.Router();
 
 // statusId
 reimbursementRouter.get('/status/:statusId', async (req, res) => {
     const statusId = +req.params.statusId;
-    // console.log(status);
     if (isNaN(statusId)) {
         res.status(400).send('Invalid status');
     } else {
@@ -41,7 +38,7 @@ reimbursementRouter.get('/user/:userId', async (req, res) => {
 
 
 
-// submit reimbursement
+// post reimbursement - submitting
 reimbursementRouter.post('', async (req, res) => {
     const { body } = req;
     const newR = new Reimbursement(0, 0, 0, 0, 0, ``, 0, 0, 0);
@@ -59,9 +56,11 @@ reimbursementRouter.post('', async (req, res) => {
     try {
         const result = await postReimbursement(newR);
 
-        // const result = await postReimbursement(newR); // have to look
+        // const result = await reimbursementServices.postReimbursement(newR); 
         if (result != undefined) {
-            res.status(201).json('created');
+          //  res.status(201).json('created');
+            res.status(201).json(result);
+
         }
     } catch (e) {
         res.status(e.status).send(e.message);
@@ -69,11 +68,11 @@ reimbursementRouter.post('', async (req, res) => {
 });
 
 //Patch reimbursement
-
 reimbursementRouter.patch('', async (req, res) => {
-
     const { body } = req;
+
     const reimburse = new Reimbursement(0, 0, 0, 0, 0, ``, 0, 0, 0);
+   
     for (const key in reimburse) {
         reimburse[key] = body[key];
     }
@@ -82,34 +81,14 @@ reimbursementRouter.patch('', async (req, res) => {
         res.status(400).send(`Please enter a valid reimbursement id`);
     }
     try {
-        const result = await patchReimbursement(reimburse);
-        res.status(201).json(result);
+        const update = await patchReimbursement(reimburse);
+        //const update = await reimbursementServices.patchReimbursement(reimburse);
+        res.status(201).json(update);
     } catch (e) {
         res.status(e.status).send(e.message);
     }
 });
 
 
-// reimbursementRouter.get('', async (req, res) => {
-//         const reims = await daoGetAllReimbursement();
-//         if (reims) {
-//             res.json(reims);
-//         } else {
-//             res.sendStatus(500);
-//         }
-//     });
 
-// // Reimbursement id
-// reimbursementRouter.get('/:reimbursementid', async (req, res) => {
-//         const reimbursementid = await +req.params.reimbursementid;
-//         if (isNaN(reimbursementid)) {
-//             res.status(400).send('Invalid reimbursementid');
-//         } else {
-//             try {
-//                 const reimbursements = await getReimbursementsByReimbursementId(reimbursementid);
-//                 res.json(reimbursements);
-//             } catch (e) {
-//                 res.status(e.status).send(e.message);
-//             }
-//         }
-//     });
+

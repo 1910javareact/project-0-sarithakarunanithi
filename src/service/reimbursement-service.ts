@@ -1,12 +1,7 @@
 
-import { Reimbursement } from "../models/reimbursement ";
-import { daoGetAllReimbursement, daoGetReimbursementsByStatusId, daoGetReimbursementsByUserId, daoPostReimbursement, daoUpdateReimbursement, daoGetReimbursementsByReimbursementId } from "../repositories/reimbursement-dao";
+//import { Reimbursement } from "../models/reimbursement ";
+import { daoGetReimbursementsByStatusId, daoGetReimbursementsByUserId, daoPostReimbursement, daoUpdateReimbursement, daoGetReimbursementsByReimbursementId } from "../repositories/reimbursement-dao";
 
-
-//get all reimbursement
-export function getAllReims(): Promise<Reimbursement[]> {
-    return daoGetAllReimbursement();
-}
 
 // status id
 export function getReimbursementsByStatusId(statusId: number) {
@@ -38,12 +33,19 @@ export function postReimbursement(post) {
 //patch
 export async function patchReimbursement(patch) {
     try {
+        console.log(patch)
+        console.log('before')
+        console.log(patch.reimbursementId)
         const post = await daoGetReimbursementsByReimbursementId(patch.reimbursementId);
+        console.log('after')
+        console.log(post)
+
         for (const key in post) {
             if (patch.hasOwnProperty(key)) {
                 post[key] = patch[key];
             }
         }
+        console.log(post)
         return await daoUpdateReimbursement(post);
     } catch (e) {
         throw e;
@@ -52,10 +54,15 @@ export async function patchReimbursement(patch) {
 
 
 // Reimbursement id
-export function getReimbursementsByReimbursementId(reimbursementid){
+export function getReimbursementsByReimbursementId(reimbursementid) {
     try {
         return daoGetReimbursementsByReimbursementId(reimbursementid);
-    } catch(e) {
+    } catch (e) {
         throw e;
     }
 }
+
+// //get all reimbursement
+// export function getAllReims(): Promise<Reimbursement[]> {
+//     return daoGetAllReimbursement();
+// }
