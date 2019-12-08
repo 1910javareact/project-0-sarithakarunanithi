@@ -1,6 +1,5 @@
 import express from 'express';
-import { getUpdateUser, getAllUser } from '../service/user-service';
-import { daoGetUserById } from '../repositories/user-dao';
+import { getUpdateUser, getAllUser, getUserById } from '../service/user-service';
 
 //routers have base path
 export const userRouter = express.Router();
@@ -14,7 +13,6 @@ async function controllerGetUsers(req, res) {
         res.status(e.status).send(e.message);
     }
 }
-
 //HTTP GET request method retrieves information from the server
 userRouter.get('', controllerGetUsers);
 
@@ -25,7 +23,8 @@ userRouter.get('/:id', async (req, res) => {
         res.sendStatus(400);
     } else {
         try {
-            const users = await daoGetUserById(id);   // have to check
+            //const users = await daoGetUserById(id);
+             const users = await getUserById(id);
             res.json(users);
         } catch (e) {
             res.status(e.status).send(e.message);
@@ -37,11 +36,9 @@ userRouter.get('/:id', async (req, res) => {
 userRouter.patch('', async (req, res) => {
     try {
         const { body } = req; // destructuring
-        const user = await getUpdateUser(body)
-        res.status(200).json(user)
+        const user = await getUpdateUser(body);
+        res.status(200).json(user);
     } catch (e) {
-        res.status(e.status).send(e.message)
+        res.status(e.status).send(e.message);
     }
-})
-
-
+});

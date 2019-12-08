@@ -8,7 +8,7 @@ export function userDTOtoUser(uD: UserDTO[]): User {
         roles.push({
             roleId: u.role_id,
             role: u.role_title
-        }); 
+        });
     }
     return new User(
         uD[0].user_id,
@@ -38,12 +38,3 @@ export function multiUserDTOUser(uD: UserDTO[]): User[] {
     result.push(userDTOtoUser(currentUser));
     return result;
 }
-
-
-
-
-
-
-
-
-

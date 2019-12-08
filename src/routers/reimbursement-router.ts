@@ -1,7 +1,6 @@
 import express from 'express';
 import { Reimbursement } from '../models/reimbursement ';
-import { getReimbursementsByUserId, getReimbursementsByStatusId, patchReimbursement, postReimbursement} from '../service/reimbursement-service';
-//import * as reimbursementServices from '../service/reimbursement-service';
+import { getReimbursementsByUserId, getReimbursementsByStatusId, patchReimbursement, postReimbursement } from '../service/reimbursement-service';
 
 export const reimbursementRouter = express.Router();
 
@@ -42,9 +41,6 @@ reimbursementRouter.get('/user/:userId', async (req, res) => {
 reimbursementRouter.post('', async (req, res) => {
     const { body } = req;
     const newR = new Reimbursement(0, 0, 0, 0, 0, ``, 0, 0, 0);
-    // console.log(req.body.description);
-    // console.log(req.body.author);
-
     for (const key in newR) {
         if (!req.body[key]) {
             res.status(400).send(`Please include all fields`);
@@ -55,10 +51,8 @@ reimbursementRouter.post('', async (req, res) => {
     }
     try {
         const result = await postReimbursement(newR);
-
-        // const result = await reimbursementServices.postReimbursement(newR); 
         if (result != undefined) {
-          //  res.status(201).json('created');
+            //  res.status(201).json('created');
             res.status(201).json(result);
 
         }
@@ -72,7 +66,7 @@ reimbursementRouter.patch('', async (req, res) => {
     const { body } = req;
 
     const reimburse = new Reimbursement(0, 0, 0, 0, 0, ``, 0, 0, 0);
-   
+
     for (const key in reimburse) {
         reimburse[key] = body[key];
     }
@@ -82,13 +76,8 @@ reimbursementRouter.patch('', async (req, res) => {
     }
     try {
         const update = await patchReimbursement(reimburse);
-        //const update = await reimbursementServices.patchReimbursement(reimburse);
         res.status(201).json(update);
     } catch (e) {
         res.status(e.status).send(e.message);
     }
 });
-
-
-
-

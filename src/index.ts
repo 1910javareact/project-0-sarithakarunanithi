@@ -8,7 +8,7 @@ import { reimbursementRouter } from './routers/reimbursement-router';
 // Initializing an app from express
 const app = express();
 
-// Middleware - all req is go by this bodyparser 
+// Middleware - all req is go by this bodyparser
 // req json string turn into json obj & fall into next endpoint
 app.use(bodyparser.json());
 
@@ -40,7 +40,7 @@ app.post('/login', async (req, res) => {
 app.use('/users', userRouter);
 
 // - /reimbursements
-app.use('/reimbursements', reimbursementRouter)
+app.use('/reimbursements', reimbursementRouter);
 
 // Environment variable setup for PORT
 const PORT = process.env.PORT || 3002;

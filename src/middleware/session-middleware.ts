@@ -9,4 +9,4 @@ const sess = {
 };
 
 // use it in index.ts
-export const sessionMiddleware = session(sess); 
+export const sessionMiddleware = session(sess);

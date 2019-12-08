@@ -15,7 +15,7 @@ export async function getUserById(id: number): Promise<User> {
     try {
         return await daoGetUserById(id);
     } catch (e) {
-        throw e
+        throw e;
     }
 }
 // return user by username & password
@@ -23,14 +23,14 @@ export async function getUserByUsernameAndPassword(username: string, password: s
     try {
         return await daoGetUsernameAndPassword(username, password);
     } catch (e) {
-        throw e
+        throw e;
     }
 }
 //return updated user
 export async function getUpdateUser(req: User) {
     try {
-        let user = await daoGetUserById(req.userId)
-        for (let key in req) {
+        const user = await daoGetUserById(req.userId);
+        for (const key in req) {
             if (req[key] !== undefined && user.hasOwnProperty(key)) {
                 user[key] = req[key];
             }

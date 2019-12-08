@@ -10,28 +10,28 @@ export async function daoGetAllUser(): Promise<User[]> {   // Promise is an obj
     let client: PoolClient;                // Pool client to interact with DB
     try {
         client = await connectionPool.connect();
-        const result = await client.query('SELECT * FROM project0_reimbursement.users NATURAL JOIN project0_reimbursement.users_roles NATURAL JOIN project0_reimbursement.roles ORDER BY user_id');   //have to write q                                      
+        const result = await client.query('SELECT * FROM project0_reimbursement.users NATURAL JOIN project0_reimbursement.users_roles NATURAL JOIN project0_reimbursement.roles ORDER BY user_id');
         // console.log(result.rows);
 
         if (result.rowCount === 0) {
-            throw 'No users in database'
+            throw 'No users in database';
         } else {
-            return multiUserDTOUser(result.rows)
+            return multiUserDTOUser(result.rows);
         }
     } catch (e) {
         if (e === 'No users in database') {
             throw {
                 status: 400,
                 message: 'No users in database'
-            }
+            };
         } else {
             throw {
                 status: 500,
                 message: 'Internal Server Error'
-            }
+            };
         }
     } finally {
-        client && client.release()
+        client && client.release();
     }
 }
 
@@ -46,7 +46,7 @@ export async function daoGetUserById(userId: number): Promise<User> {
         // console.log(result.rows);
 
         if (result.rowCount === 0) {
-            throw 'No such User'
+            throw 'No such User';
         } else {
             return userDTOtoUser(result.rows);
         }
@@ -55,15 +55,15 @@ export async function daoGetUserById(userId: number): Promise<User> {
             throw {
                 status: 404,
                 message: 'No such User'
-            }
+            };
         } else {
             throw {
                 status: 500,
                 message: 'Internal Server Error'
-            }
+            };
         }
     } finally {
-        client && client.release()
+        client && client.release();
     }
 }
 
@@ -73,7 +73,7 @@ export async function daoGetUsernameAndPassword(username: string, password: stri
     try {
         client = await connectionPool.connect();
         const result = await client.query('SELECT * FROM project0_reimbursement.users NATURAL JOIN project0_reimbursement.users_roles NATURAL JOIN project0_reimbursement.roles WHERE username = $1 AND password = $2;',
-            [username, password]); // write q 
+            [username, password]);
         if (result.rowCount === 0) {
             throw 'Bad Credentials';
         } else {
@@ -85,7 +85,7 @@ export async function daoGetUsernameAndPassword(username: string, password: stri
             throw {
                 status: 401,
                 message: 'Invalid'
-            }
+            };
         } else {
             throw {
                 status: 500,
@@ -105,12 +105,8 @@ export async function daoUpdateUser(newUser: User) {
         client.query('BEGIN');
         await client.query('update project0_reimbursement.users SET username = $1, password = $2, first_name = $3, last_name = $4, email = $5 WHERE user_id = $6',
             [newUser.username, newUser.password, newUser.firstName, newUser.lastName, newUser.email, newUser.userId]);
-       
-      // console.log(newUser.password);
-
         client.query('COMMIT');
-        return daoGetUserById(newUser.userId)
-       
+        return daoGetUserById(newUser.userId);
     } catch (e) {
         // console.log(e);
         client.query('ROLLBACK');
