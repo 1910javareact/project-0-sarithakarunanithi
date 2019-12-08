@@ -23,7 +23,6 @@ userRouter.get('/:id', async (req, res) => {
         res.sendStatus(400);
     } else {
         try {
-            //const users = await daoGetUserById(id);
              const users = await getUserById(id);
             res.json(users);
         } catch (e) {
