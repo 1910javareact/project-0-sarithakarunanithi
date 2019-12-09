@@ -43,7 +43,7 @@ app.use('/users', userRouter);
 app.use('/reimbursements', reimbursementRouter);
 
 // Environment variable setup for PORT
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 3001;
 
 // Start server with PORT || 3002
 app.listen(PORT, () => {
