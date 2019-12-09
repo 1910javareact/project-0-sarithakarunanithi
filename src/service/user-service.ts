@@ -9,7 +9,7 @@ export async function getAllUser(): Promise<User[]> {
         throw e;
     }
 }
-//return user by id
+// user by id
 export async function getUserById(id: number): Promise<User> {
     //console.log(id);
     try {
@@ -18,7 +18,7 @@ export async function getUserById(id: number): Promise<User> {
         throw e;
     }
 }
-// return user by username & password
+// user by username & password
 export async function getUserByUsernameAndPassword(username: string, password: string): Promise<User> {
     try {
         return await daoGetUsernameAndPassword(username, password);
@@ -26,7 +26,7 @@ export async function getUserByUsernameAndPassword(username: string, password: s
         throw e;
     }
 }
-//return updated user
+// update user
 export async function getUpdateUser(req: User) {
     try {
         const user = await daoGetUserById(req.userId);
