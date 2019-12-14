@@ -4,6 +4,8 @@ import { userRouter } from './routers/user-router';
 import { sessionMiddleware } from './middleware/session-middleware';
 import { getUserByUsernameAndPassword } from './service/user-service';
 import { reimbursementRouter } from './routers/reimbursement-router';
+import { loggingMiddleware } from './middleware/logging-middleware';
+import { corsFilter } from './middleware/cors-middleware';
 
 // Initializing an app from express
 const app = express();
@@ -11,6 +13,11 @@ const app = express();
 // Middleware - all req is go by this bodyparser
 // req json string turn into json obj & fall into next endpoint
 app.use(bodyparser.json());
+
+app.use(loggingMiddleware);
+
+// CORS
+app.use(corsFilter);
 
 // session middleware - handling the session
 app.use(sessionMiddleware);
@@ -45,7 +52,7 @@ app.use('/reimbursements', reimbursementRouter);
 // Environment variable setup for PORT
 const PORT = process.env.PORT || 3001;
 
-// Start server with PORT || 3002
+// Start server with PORT || 3001
 app.listen(PORT, () => {
     console.log(`app started on port ${PORT}...`);
 });

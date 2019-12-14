@@ -10,7 +10,7 @@ export async function daoGetReimbursementsByStatusId(statusId: number) {
     try {
         client = await connectionPool.connect();
         const result = await client.query('SELECT * FROM project0_reimbursement.reimbursement WHERE status = $1 ORDER BY date_submitted DESC', [statusId]);
-        console.log(result.rows);
+        //console.log(result.rows);
         if (result.rowCount === 0) {
             throw 'No reimbursements with that status';
         } else {
@@ -94,7 +94,7 @@ export async function daoUpdateReimbursement(r: Reimbursement) {
         client = await connectionPool.connect();
 
         client.query('BEGIN');
-        console.log(r.reimbursementId);
+       // console.log(r.reimbursementId);
 
         await client.query(`UPDATE project0_reimbursement.reimbursement SET author = $2, amount = $3, date_submitted = $4, date_resolved = $5, description = $6,
             resolver = $7, status = $8, type = $9 WHERE reimbursement_id = $1;`,
@@ -143,24 +143,6 @@ export async function daoGetReimbursementsByReimbursementId(reimbursementId: num
                 message: 'Internal Server Error'
             };
         }
-    } finally {
-        client && client.release();
-    }
-}
-
-// Get all Reimbursement
-export async function daoGetAllReimbursement(): Promise<Reimbursement[]> {
-    let client: PoolClient;
-    try {
-        client = await connectionPool.connect();
-        const result = await client.query('SELECT * FROM project0_reimbursement.reimbursement');
-        return multiReimbursementDTOtoReimbursement(result.rows);
-    } catch (e) {
-        console.log(e);
-        throw {
-            status: 500,
-            message: 'Internal Server Error'
-        };
     } finally {
         client && client.release();
     }

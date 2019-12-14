@@ -37,19 +37,10 @@ export async function patchReimbursement(patch) {
                 post[key] = patch[key];
             }
         }
-        console.log(post);
+       // console.log(post);
         return await daoUpdateReimbursement(post);
     } catch (e) {
         throw e;
     }
 }
 
-
-// Reimbursement id
-export function getReimbursementsByReimbursementId(reimbursementid) {
-    try {
-        return daoGetReimbursementsByReimbursementId(reimbursementid);
-    } catch (e) {
-        throw e;
-    }
-}
